@@ -3005,7 +3005,7 @@ function ContactPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
               <div className="space-y-6 mb-10">
                 {[
-                  { label: "Main Office", val: "5032 50 Ave, Wetaskiwin, AB" },
+                  { label: "Main Office", val: "5211 50th Avenue, Wetaskiwin, Alberta T9A 0S7" },
                   { label: "Phone", val: "1(866)915-1877" },
                   { label: "Email", val: "info@signore-asplaw.com" },
                   { label: "Office Hours", val: "Mon–Fri 8:30 am – 5:00 pm" },
@@ -3244,7 +3244,7 @@ function Footer({ onNavigate }: { onNavigate: (p: Page) => void }) {
             </p>
             <ul className="space-y-3">
               <li className="text-[12px] text-[#8A8070]">
-                5032 50 Ave, Wetaskiwin, AB
+                5211 50th Avenue, Wetaskiwin, Alberta T9A 0S7
               </li>
               <li className="text-[12px] text-[#8A8070]">1(866)915-1877</li>
               <li className="text-[12px] text-[#8A8070]">
