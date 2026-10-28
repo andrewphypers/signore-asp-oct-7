@@ -1,28 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
+import { Analytics } from "@vercel/analytics/react"
 
-type Page = "home" | "team" | "practice" | "contact" | "criminal" | "family" | "wills" | "injury" | "civil" | "farm" | "domestic" | "realestate" | "epo" | "dependent";
+type Page = "home" | "team" | "practice" | "contact" | "criminal" | "family" | "wills" | "injury" | "civil" | "farm" | "domestic" | "realestate" | "epo" | "dependent"
 
-const NAV_LINKS: { label: string; page: Page }[] = [
+const NAV_LINKS: { label: string page: Page }[] = [
   { label: "Home", page: "home" },
   { label: "Practice Areas", page: "practice" },
   { label: "Our Team", page: "team" },
   { label: "Contact", page: "contact" },
-];
+]
 
-function ScalesMark({ size = 48, color = "#C4883D" }: { size?: number; color?: string }) {
-  const s = size;
-  const cx = s / 2;
-  const cy = s / 2;
-  const half = s * 0.38;
-  const sw = s * 0.028;
+function ScalesMark({
+  size = 48,
+  color = "#C4883D",
+}: {
+  size?: number
+  color?: string
+}) {
+  const s = size
+  const cx = s / 2
+  const cy = s / 2
+  const half = s * 0.38
+  const sw = s * 0.028
 
   // Dagger proportions — taller, fills more of the vertical space
-  const tipY    = cy - half * 0.88;   // blade tip — higher
-  const guardY  = cy + half * 0.14;   // crossguard
-  const pommelY = cy + half * 0.78;   // pommel — lower
+  const tipY = cy - half * 0.88 // blade tip — higher
+  const guardY = cy + half * 0.14 // crossguard
+  const pommelY = cy + half * 0.78 // pommel — lower
 
   // Blade — slender double-edged leaf, widest just below midpoint of blade
-  const bladeW  = half * 0.13;
+  const bladeW = half * 0.13
   const bladePath = [
     `M ${cx} ${tipY}`,
     `C ${cx + bladeW * 0.5} ${tipY + (guardY - tipY) * 0.25}`,
@@ -33,17 +40,17 @@ function ScalesMark({ size = 48, color = "#C4883D" }: { size?: number; color?: s
     `C ${cx - bladeW} ${tipY + (guardY - tipY) * 0.6}`,
     `  ${cx - bladeW * 0.5} ${tipY + (guardY - tipY) * 0.25}`,
     `  ${cx} ${tipY} Z`,
-  ].join(' ');
+  ].join(" ")
 
   // Crossguard — slim horizontal bar, slightly tapered ends
-  const guardHalf = half * 0.42;
-  const guardThick = sw * 0.85;
+  const guardHalf = half * 0.42
+  const guardThick = sw * 0.85
 
   // Grip — thin rectangle between guard and pommel
-  const gripW = sw * 0.7;
+  const gripW = sw * 0.7
 
   // Pommel — small filled circle
-  const pommelR = sw * 1.1;
+  const pommelR = sw * 1.1
 
   return (
     <svg width={s} height={s} viewBox={`0 0 ${s} ${s}`} fill="none" aria-hidden>
@@ -51,24 +58,38 @@ function ScalesMark({ size = 48, color = "#C4883D" }: { size?: number; color?: s
       <path d={bladePath} fill={color} opacity={0.95} />
       {/* Crossguard */}
       <line
-        x1={cx - guardHalf} y1={guardY}
-        x2={cx + guardHalf} y2={guardY}
-        stroke={color} strokeWidth={guardThick} strokeLinecap="round"
+        x1={cx - guardHalf}
+        y1={guardY}
+        x2={cx + guardHalf}
+        y2={guardY}
+        stroke={color}
+        strokeWidth={guardThick}
+        strokeLinecap="round"
       />
       {/* Grip */}
       <line
-        x1={cx} y1={guardY + guardThick / 2}
-        x2={cx} y2={pommelY - pommelR}
-        stroke={color} strokeWidth={gripW} strokeLinecap="round"
+        x1={cx}
+        y1={guardY + guardThick / 2}
+        x2={cx}
+        y2={pommelY - pommelR}
+        stroke={color}
+        strokeWidth={gripW}
+        strokeLinecap="round"
       />
       {/* Pommel */}
       <circle cx={cx} cy={pommelY} r={pommelR} fill={color} />
     </svg>
-  );
+  )
 }
 
-function Logo({ onClick, dark = false }: { onClick: () => void; dark?: boolean }) {
-  const text = dark ? "text-[#0B0A09]" : "text-[#F5EFE4]";
+function Logo({
+  onClick,
+  dark = false,
+}: {
+  onClick: () => void
+  dark?: boolean
+}) {
+  const text = dark ? "text-[#0B0A09]" : "text-[#F5EFE4]"
   return (
     <button
       onClick={onClick}
@@ -99,50 +120,66 @@ function Logo({ onClick, dark = false }: { onClick: () => void; dark?: boolean }
         LLP
       </span>
     </button>
-  );
+  )
 }
 
 /* Full portrait logo card — used in standalone contexts */
 function LogoCard({ light = false }: { light?: boolean }) {
-  const bg = light ? "bg-[#F5EFE4]" : "bg-[#141210]";
-  const text = light ? "text-[#0B0A09]" : "text-[#F5EFE4]";
+  const bg = light ? "bg-[#F5EFE4]" : "bg-[#141210]"
+  const text = light ? "text-[#0B0A09]" : "text-[#F5EFE4]"
   return (
-    <div className={`${bg} flex flex-col items-center justify-center px-12 py-10 gap-4`}>
+    <div
+      className={`${bg} flex flex-col items-center justify-center px-12 py-10 gap-4`}
+    >
       <ScalesMark size={88} color="#C4883D" />
       <div className="text-center mt-2">
-        <p style={{ fontFamily: "var(--font-display)" }} className={`text-[22px] font-[400] ${text}`}>
-          Signore &amp; Asp <span className="text-[#C4883D] text-[14px]">LLP</span>
+        <p
+          style={{ fontFamily: "var(--font-display)" }}
+          className={`text-[22px] font-[400] ${text}`}
+        >
+          Signore &amp; Asp{" "}
+          <span className="text-[#C4883D] text-[14px]">LLP</span>
         </p>
-        <p style={{ letterSpacing: "0.18em" }} className="text-[9px] uppercase text-[#C4883D] font-[600] mt-1">
+        <p
+          style={{ letterSpacing: "0.18em" }}
+          className="text-[9px] uppercase text-[#C4883D] font-[600] mt-1"
+        >
           Barristers &amp; Solicitors
         </p>
-        <p style={{ letterSpacing: "0.14em" }} className="text-[9px] uppercase text-[#6B6258] font-[500] mt-1">
+        <p
+          style={{ letterSpacing: "0.14em" }}
+          className="text-[9px] uppercase text-[#6B6258] font-[500] mt-1"
+        >
           Wetaskiwin, Alberta
         </p>
       </div>
     </div>
-  );
+  )
 }
 
 function Navbar({
   current,
   onNavigate,
 }: {
-  current: Page;
-  onNavigate: (p: Page) => void;
+  current: Page
+  onNavigate: (p: Page) => void
 }) {
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false)
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handler);
-    return () => window.removeEventListener("scroll", handler);
-  }, []);
+    const handler = () => setScrolled(window.scrollY > 40)
+    window.addEventListener("scroll", handler)
+    return () => window.removeEventListener("scroll", handler)
+  }, [])
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-[#0B0A09]/95 backdrop-blur-sm border-b border-[#2C2620]" : "bg-transparent"}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-[#0B0A09]/95 backdrop-blur-sm border-b border-[#2C2620]"
+          : "bg-transparent"
+      }`}
     >
       <div className="max-w-[1180px] mx-auto px-6 md:px-10 flex items-center justify-between h-[96px]">
         <Logo onClick={() => onNavigate("home")} />
@@ -154,7 +191,11 @@ function Navbar({
               key={page}
               onClick={() => onNavigate(page)}
               style={{ letterSpacing: "0.1em" }}
-              className={`text-[11px] uppercase font-[500] transition-colors duration-200 ${current === page ? "text-[#C4883D]" : "text-[#B8AFA0] hover:text-[#F5EFE4]"}`}
+              className={`text-[11px] uppercase font-[500] transition-colors duration-200 ${
+                current === page
+                  ? "text-[#C4883D]"
+                  : "text-[#B8AFA0] hover:text-[#F5EFE4]"
+              }`}
             >
               {label}
             </button>
@@ -188,21 +229,9 @@ function Navbar({
               />
             ) : (
               <>
-                <path
-                  d="M3 6H19"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M3 11H19"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M3 16H19"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                />
+                <path d="M3 6H19" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M3 11H19" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M3 16H19" stroke="currentColor" strokeWidth="1.5" />
               </>
             )}
           </svg>
@@ -216,19 +245,21 @@ function Navbar({
             <button
               key={page}
               onClick={() => {
-                onNavigate(page);
-                setOpen(false);
+                onNavigate(page)
+                setOpen(false)
               }}
               style={{ letterSpacing: "0.1em" }}
-              className={`text-left text-[12px] uppercase font-[500] ${current === page ? "text-[#C4883D]" : "text-[#B8AFA0]"}`}
+              className={`text-left text-[12px] uppercase font-[500] ${
+                current === page ? "text-[#C4883D]" : "text-[#B8AFA0]"
+              }`}
             >
               {label}
             </button>
           ))}
           <button
             onClick={() => {
-              onNavigate("contact");
-              setOpen(false);
+              onNavigate("contact")
+              setOpen(false)
             }}
             className="mt-2 px-5 py-3 bg-[#C4883D] text-[#0B0A09] text-[11px] uppercase font-[600] tracking-[0.12em] text-center"
           >
@@ -237,7 +268,7 @@ function Navbar({
         </div>
       )}
     </header>
-  );
+  )
 }
 
 function GoldButton({
@@ -245,9 +276,9 @@ function GoldButton({
   onClick,
   outline,
 }: {
-  children: React.ReactNode;
-  onClick?: () => void;
-  outline?: boolean;
+  children: React.ReactNode
+  onClick?: () => void
+  outline?: boolean
 }) {
   return (
     <button
@@ -261,7 +292,7 @@ function GoldButton({
     >
       {children}
     </button>
-  );
+  )
 }
 
 function SectionDivider() {
@@ -270,7 +301,7 @@ function SectionDivider() {
       <span className="w-8 h-px bg-[#C4883D]" />
       <span className="w-1 h-1 rounded-full bg-[#C4883D]" />
     </div>
-  );
+  )
 }
 
 /* ─────────────────────────── HOME PAGE ─────────────────────────── */
@@ -401,7 +432,9 @@ function HomePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
             ].map((area) => (
               <div
                 key={area.title}
-                className={`${area.primary ? "bg-[#0F0D0C]" : "bg-[#0B0A09]"} p-8 md:p-10 group cursor-pointer hover:bg-[#141210] transition-colors duration-300`}
+                className={`${
+                  area.primary ? "bg-[#0F0D0C]" : "bg-[#0B0A09]"
+                } p-8 md:p-10 group cursor-pointer hover:bg-[#141210] transition-colors duration-300`}
                 onClick={() => area.page && onNavigate(area.page)}
               >
                 <h3
@@ -540,8 +573,8 @@ function HomePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
             <p className="text-[14px] text-[#8A8070] leading-relaxed">
               Whether you are facing a criminal charge, navigating a separation,
               or closing on a property — you deserve counsel who knows this
-              community, understands what is at stake, and will be in your corner
-              from start to finish.
+              community, understands what is at stake, and will be in your
+              corner from start to finish.
             </p>
             <GoldButton onClick={() => onNavigate("contact")}>
               Speak with a Lawyer
@@ -573,7 +606,7 @@ function HomePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
       <Footer onNavigate={onNavigate} />
     </div>
-  );
+  )
 }
 
 /* ─────────────────────────── TEAM PAGE ─────────────────────────── */
@@ -581,16 +614,25 @@ const ATTORNEYS = [
   {
     name: "Andrea Signore",
     title: "Partner",
-    short: "Lead counsel in family and civil matters with a decade of courtroom experience.",
+    short:
+      "Lead counsel in family and civil matters with a decade of courtroom experience.",
     bio: "Andrea Signore founded the practice with a conviction that smaller communities deserve the same calibre of legal representation found in major centres. Her practice spans contested divorces, complex property disputes, and civil litigation. She is known for her composed courtroom presence and her ability to build genuine trust with clients navigating their most difficult moments. Andrea understands the needs of rural communities and the difficulties when a family farm experiences a divorce or relationship breakdown. She is happy to assist in the preparation of cohabitation agreements prior to marriage to protect pre-relationship assets, and offers experienced guidance for addressing claims to divide the farm. Andrea has devoted her entire career to Wetaskiwin, Leduc, Camrose, Ponoka, and the surrounding rural communities — and proudly lives and raises her family here.",
     photo: "/assets/andrea-signore.jpg",
     teamPhoto: "/assets/andrea-signore-team.jpg",
-    areas: ["Family Law", "Civil Litigation", "Real Estate", "Farm & Agricultural Disputes", "Wills & Estates", "Domestic Abuse Civil Claims"],
+    areas: [
+      "Family Law",
+      "Civil Litigation",
+      "Real Estate",
+      "Farm & Agricultural Disputes",
+      "Wills & Estates",
+      "Domestic Abuse Civil Claims",
+    ],
   },
   {
     name: "Joshua Asp",
     title: "Partner",
-    short: "Criminal defence specialist with an exceptional record across trial and appeal.",
+    short:
+      "Criminal defence specialist with an exceptional record across trial and appeal.",
     bio: "Joshua Asp built his reputation in Alberta courtrooms defending individuals against charges ranging from assault to major indictable offences. His methodical preparation, command of evidentiary law, and persuasive advocacy have resulted in acquittals and favourable resolutions across hundreds of cases. He brings the same rigour to every file regardless of charge severity.",
     photo: "/assets/joshua-asp.jpg",
     areas: ["Criminal Defence", "Bail Hearings", "Appeals"],
@@ -598,12 +640,18 @@ const ATTORNEYS = [
   {
     name: "Andrew Phypers",
     title: "Partner",
-    short: "Criminal defence counsel committed to protecting the rights of every client from first appearance through trial.",
+    short:
+      "Criminal defence counsel committed to protecting the rights of every client from first appearance through trial.",
     bio: "Andrew Phypers focuses exclusively on criminal defence, representing individuals facing charges across the full spectrum of the Criminal Code of Canada. He brings meticulous preparation and a principled approach to every matter — from bail hearings and Charter applications to contested trials. Andrew is committed to ensuring every client receives a thorough, fearless defence regardless of the charge.",
     photo: "/assets/andrew-phypers.jpg",
-    areas: ["Criminal Defence", "Bail Hearings", "Charter Applications", "Appeals"],
+    areas: [
+      "Criminal Defence",
+      "Bail Hearings",
+      "Charter Applications",
+      "Appeals",
+    ],
   },
-];
+]
 
 function TeamPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
   return (
@@ -640,11 +688,15 @@ function TeamPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
       {ATTORNEYS.map((a, i) => (
         <section
           key={a.name}
-          className={`border-b border-[#2C2620] ${i % 2 === 1 ? "bg-[#0F0D0C]" : ""}`}
+          className={`border-b border-[#2C2620] ${
+            i % 2 === 1 ? "bg-[#0F0D0C]" : ""
+          }`}
         >
           <div className="max-w-[1180px] mx-auto px-6 md:px-10 py-16 md:py-24 grid md:grid-cols-2 gap-12 md:gap-20 items-center">
             <div
-              className={`relative h-[400px] md:h-[520px] bg-[#161412] overflow-hidden ${i % 2 === 1 ? "md:order-2" : ""}`}
+              className={`relative h-[400px] md:h-[520px] bg-[#161412] overflow-hidden ${
+                i % 2 === 1 ? "md:order-2" : ""
+              }`}
             >
               <img
                 src={(a as any).teamPhoto ?? a.photo}
@@ -694,7 +746,7 @@ function TeamPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
       <Footer onNavigate={onNavigate} />
     </div>
-  );
+  )
 }
 
 /* ─────────────────────────── PRACTICE PAGE ─────────────────────────── */
@@ -770,7 +822,7 @@ function PracticePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
       desc: "When a loved one can no longer manage their own affairs, families need clarity and a steady hand. We guide you through the guardianship and trusteeship process so your family member is protected.",
       img: "https://images.unsplash.com/photo-1749087869560-1f00fe44b58e?w=800&h=500&fit=crop&auto=format",
     },
-  ];
+  ]
 
   return (
     <div className="bg-[#0B0A09] pt-[96px]">
@@ -789,7 +841,9 @@ function PracticePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
       {areas.map((area, i) => (
         <section
           key={area.title}
-          className={`border-b border-[#2C2620] ${i % 2 === 1 ? "bg-[#0F0D0C]" : ""}`}
+          className={`border-b border-[#2C2620] ${
+            i % 2 === 1 ? "bg-[#0F0D0C]" : ""
+          }`}
         >
           <div className="max-w-[1180px] mx-auto px-6 md:px-10 py-16 md:py-24 grid md:grid-cols-5 gap-12 items-center">
             <div className={`md:col-span-3 ${i % 2 === 1 ? "md:order-2" : ""}`}>
@@ -820,7 +874,9 @@ function PracticePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
               </div>
             </div>
             <div
-              className={`md:col-span-2 h-[260px] md:h-[340px] bg-[#161412] overflow-hidden ${i % 2 === 1 ? "md:order-1" : ""}`}
+              className={`md:col-span-2 h-[260px] md:h-[340px] bg-[#161412] overflow-hidden ${
+                i % 2 === 1 ? "md:order-1" : ""
+              }`}
             >
               <img
                 src={area.img}
@@ -834,7 +890,7 @@ function PracticePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
       <Footer onNavigate={onNavigate} />
     </div>
-  );
+  )
 }
 
 /* ─────────────────────────── CRIMINAL PAGE ─────────────────────────── */
@@ -855,8 +911,8 @@ function CriminalPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
             style={{ fontFamily: "var(--font-display)", lineHeight: 1.1 }}
             className="text-[38px] md:text-[60px] font-[400] text-[#F5EFE4] max-w-[760px]"
           >
-            Criminal{" "}
-            <em className="not-italic text-[#C4883D]">Defence</em> in Canada
+            Criminal <em className="not-italic text-[#C4883D]">Defence</em> in
+            Canada
           </h1>
           <p className="text-[14px] text-[#8A8070] mt-5 max-w-[520px] leading-relaxed">
             When your liberty, record, and reputation are on the line, you need
@@ -870,7 +926,6 @@ function CriminalPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
         <div className="max-w-[1180px] mx-auto px-6 md:px-10 py-16 md:py-24 grid md:grid-cols-3 gap-12 md:gap-16">
           {/* Main content */}
           <div className="md:col-span-2 space-y-10">
-
             <div>
               <h2
                 style={{ fontFamily: "var(--font-display)" }}
@@ -931,7 +986,10 @@ function CriminalPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
                   "Mischief & breach of court orders",
                   "Major indictable & hybrid offences",
                 ].map((charge) => (
-                  <div key={charge} className="bg-[#0B0A09] px-5 py-4 flex items-center gap-3">
+                  <div
+                    key={charge}
+                    className="bg-[#0B0A09] px-5 py-4 flex items-center gap-3"
+                  >
                     <span className="w-1 h-1 rounded-full bg-[#C4883D] flex-shrink-0" />
                     <span className="text-[13px] text-[#B8AFA0]">{charge}</span>
                   </div>
@@ -1001,7 +1059,6 @@ function CriminalPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
                 ))}
               </div>
             </div>
-
           </div>
 
           {/* Sidebar */}
@@ -1039,7 +1096,10 @@ function CriminalPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
                   val: "info@signore-asplaw.com",
                 },
               ].map((c) => (
-                <div key={c.label} className="border-b border-[#2C2620] pb-4 last:border-0 last:pb-0">
+                <div
+                  key={c.label}
+                  className="border-b border-[#2C2620] pb-4 last:border-0 last:pb-0"
+                >
                   <p className="text-[11px] text-[#6B6258] mb-1">{c.label}</p>
                   <p className="text-[13px] text-[#B8AFA0]">{c.val}</p>
                 </div>
@@ -1095,7 +1155,7 @@ function CriminalPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
       <Footer onNavigate={onNavigate} />
     </div>
-  );
+  )
 }
 
 /* ─────────────────────────── FAMILY PAGE ─────────────────────────── */
@@ -1116,7 +1176,9 @@ function FamilyPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
             className="text-[38px] md:text-[60px] font-[400] text-[#F5EFE4] max-w-[700px]"
           >
             Compassionate Family Law Counsel Through Life's{" "}
-            <em className="not-italic text-[#C4883D]">Most Difficult Transitions</em>
+            <em className="not-italic text-[#C4883D]">
+              Most Difficult Transitions
+            </em>
           </h1>
         </div>
       </section>
@@ -1139,8 +1201,8 @@ function FamilyPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
               </p>
               <p className="text-[14px] text-[#8A8070] leading-relaxed">
                 Our goal is always the most efficient resolution that protects
-                your interests and, where children are involved, their
-                wellbeing above all.
+                your interests and, where children are involved, their wellbeing
+                above all.
               </p>
             </div>
           </div>
@@ -1256,7 +1318,7 @@ function FamilyPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
       <Footer onNavigate={onNavigate} />
     </div>
-  );
+  )
 }
 
 /* ─────────────────────────── DEPENDENT ADULT PAGE ─────────────────────────── */
@@ -1307,25 +1369,28 @@ function DependentAdultPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
               manage their own affairs — or caring for a family member whose
               cognitive impairment has left them vulnerable — is a deeply
               painful experience. Families often struggle for months or years
-              before recognising that legal protection is necessary. When
-              that moment comes, the process should feel like help, not an
-              additional burden.
+              before recognising that legal protection is necessary. When that
+              moment comes, the process should feel like help, not an additional
+              burden.
             </p>
             <p className="text-[14px] text-[#B8AFA0] leading-relaxed mb-5">
-              Under Alberta's <em className="text-[#D4A055]">Adult Guardianship and Trusteeship Act</em>,
-              a court can appoint a guardian to make personal decisions —
-              such as healthcare, housing, and daily care — and a trustee
-              to manage financial affairs on behalf of a dependent adult.
-              These appointments are a legal safeguard, not a taking-away
-              of dignity. Their purpose is to ensure your family member
-              is protected, cared for, and not exploited.
+              Under Alberta's{" "}
+              <em className="text-[#D4A055]">
+                Adult Guardianship and Trusteeship Act
+              </em>
+              , a court can appoint a guardian to make personal decisions — such
+              as healthcare, housing, and daily care — and a trustee to manage
+              financial affairs on behalf of a dependent adult. These
+              appointments are a legal safeguard, not a taking-away of dignity.
+              Their purpose is to ensure your family member is protected, cared
+              for, and not exploited.
             </p>
             <p className="text-[14px] text-[#B8AFA0] leading-relaxed">
-              We guide families through the application process from start
-              to finish — explaining what is required, gathering the
-              necessary medical and personal information, preparing the
-              court documents, and representing you at the hearing. We
-              move carefully because we understand what is at stake.
+              We guide families through the application process from start to
+              finish — explaining what is required, gathering the necessary
+              medical and personal information, preparing the court documents,
+              and representing you at the hearing. We move carefully because we
+              understand what is at stake.
             </p>
           </div>
 
@@ -1430,22 +1495,23 @@ function DependentAdultPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
               style={{ fontFamily: "var(--font-display)" }}
               className="text-[20px] font-[500] text-[#F5EFE4] mb-3"
             >
-              A process built around dignity and the least restrictive intervention.
+              A process built around dignity and the least restrictive
+              intervention.
             </h3>
             <p className="text-[13px] text-[#B8AFA0] leading-relaxed mb-3">
               Alberta's guardianship legislation is designed to protect adults
               while preserving as much of their autonomy as possible. Courts
-              will only grant the authority that is genuinely necessary —
-              which means we always consider whether a less restrictive option,
-              such as a supported decision-making authorization or an enduring
-              power of attorney, might better serve your family member's needs.
+              will only grant the authority that is genuinely necessary — which
+              means we always consider whether a less restrictive option, such
+              as a supported decision-making authorization or an enduring power
+              of attorney, might better serve your family member's needs.
             </p>
             <p className="text-[13px] text-[#B8AFA0] leading-relaxed">
               We approach these applications with the seriousness and
               sensitivity they deserve. We take the time to understand your
-              family member's situation, explain the options honestly, and
-              help you choose the path that is right for them — not just
-              the most straightforward one for the courts.
+              family member's situation, explain the options honestly, and help
+              you choose the path that is right for them — not just the most
+              straightforward one for the courts.
             </p>
           </div>
         </div>
@@ -1460,9 +1526,9 @@ function DependentAdultPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
           We can help your family find the right path forward.
         </h2>
         <p className="text-[14px] text-[#8A8070] max-w-xl mx-auto mb-10">
-          These applications take time and care to do properly. The sooner
-          you speak with us, the more options you have. Contact our
-          Wetaskiwin office to arrange a consultation.
+          These applications take time and care to do properly. The sooner you
+          speak with us, the more options you have. Contact our Wetaskiwin
+          office to arrange a consultation.
         </p>
         <button
           onClick={() => onNavigate("contact")}
@@ -1475,7 +1541,7 @@ function DependentAdultPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
       <Footer onNavigate={onNavigate} />
     </main>
-  );
+  )
 }
 
 /* ─────────────────────────── EMERGENCY PROTECTION ORDERS PAGE ─────────────────────────── */
@@ -1514,8 +1580,9 @@ function EPOPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center gap-4">
           <div className="w-1 h-8 bg-[#C4883D] shrink-0 rounded-full" />
           <p className="text-[12px] text-[#D4A055]">
-            <strong>If you are in immediate danger, call 911.</strong> Alberta Family Violence Info Line:{" "}
-            <strong>310‑1818</strong> (24 hours). Everything you discuss with our office is strictly confidential.
+            <strong>If you are in immediate danger, call 911.</strong> Alberta
+            Family Violence Info Line: <strong>310‑1818</strong> (24 hours).
+            Everything you discuss with our office is strictly confidential.
           </p>
         </div>
       </div>
@@ -1528,31 +1595,34 @@ function EPOPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
               style={{ fontFamily: "var(--font-display)" }}
               className="text-3xl font-[400] text-[#F5EFE4] leading-snug mb-6"
             >
-              Family violence is one of the most difficult situations a person can face. You do not have to navigate it alone.
+              Family violence is one of the most difficult situations a person
+              can face. You do not have to navigate it alone.
             </h2>
             <p className="text-[14px] text-[#B8AFA0] leading-relaxed mb-5">
               Living with family violence — physical, psychological, or
-              financial — is isolating and frightening. The decision to
-              seek legal protection takes courage, and the process can feel
+              financial — is isolating and frightening. The decision to seek
+              legal protection takes courage, and the process can feel
               overwhelming when you are already under enormous stress. A
-              lawyer's role is to carry as much of that burden as possible:
-              to know the law, to know the process, and to guide you
-              through every step with patience and care.
+              lawyer's role is to carry as much of that burden as possible: to
+              know the law, to know the process, and to guide you through every
+              step with patience and care.
             </p>
             <p className="text-[14px] text-[#B8AFA0] leading-relaxed mb-5">
-              Alberta's <em className="text-[#D4A055]">Protection Against Family Violence Act</em> allows
-              a court to grant an Emergency Protection Order on the same
-              day it is applied for — without the abuser being present.
-              The order can require an abuser to vacate the family home,
-              surrender firearms, stay away from you and your children,
-              and cease all contact immediately.
+              Alberta's{" "}
+              <em className="text-[#D4A055]">
+                Protection Against Family Violence Act
+              </em>{" "}
+              allows a court to grant an Emergency Protection Order on the same
+              day it is applied for — without the abuser being present. The
+              order can require an abuser to vacate the family home, surrender
+              firearms, stay away from you and your children, and cease all
+              contact immediately.
             </p>
             <p className="text-[14px] text-[#B8AFA0] leading-relaxed">
-              We assist clients through every stage: assessing whether an
-              EPO is the right step, preparing the application, attending
-              with you before the Justice of the Peace, and managing the
-              follow-up King's Bench hearing that reviews the order within
-              nine days.
+              We assist clients through every stage: assessing whether an EPO is
+              the right step, preparing the application, attending with you
+              before the Justice of the Peace, and managing the follow-up King's
+              Bench hearing that reviews the order within nine days.
             </p>
           </div>
 
@@ -1668,13 +1738,13 @@ function EPOPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
               family violence takes strength. We do not rush clients, we do not
               judge, and we do not pressure anyone into a course of action they
               are not ready to take. Our role is to explain your options
-              clearly, help you understand the likely outcomes, and stand
-              beside you when you are ready to move forward.
+              clearly, help you understand the likely outcomes, and stand beside
+              you when you are ready to move forward.
             </p>
             <p className="text-[13px] text-[#B8AFA0] leading-relaxed">
-              All communications with our office are strictly confidential.
-              We can advise on safe ways to contact us if you are concerned
-              about your communications being monitored.
+              All communications with our office are strictly confidential. We
+              can advise on safe ways to contact us if you are concerned about
+              your communications being monitored.
             </p>
           </div>
         </div>
@@ -1689,9 +1759,9 @@ function EPOPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
           We are here when you need us.
         </h2>
         <p className="text-[14px] text-[#8A8070] max-w-xl mx-auto mb-10">
-          Contact our office to speak with a lawyer confidentially. There
-          is no obligation, no judgment, and no pressure. Just honest,
-          careful advice from people who take your safety seriously.
+          Contact our office to speak with a lawyer confidentially. There is no
+          obligation, no judgment, and no pressure. Just honest, careful advice
+          from people who take your safety seriously.
         </p>
         <button
           onClick={() => onNavigate("contact")}
@@ -1704,7 +1774,7 @@ function EPOPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
       <Footer onNavigate={onNavigate} />
     </main>
-  );
+  )
 }
 
 /* ─────────────────────────── REAL ESTATE PAGE ─────────────────────────── */
@@ -1750,23 +1820,22 @@ function RealEstatePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
             </h2>
             <p className="text-[14px] text-[#B8AFA0] leading-relaxed mb-5">
               Real estate transactions involve significant sums, tight
-              timelines, and a stack of documents most people see only once
-              in their lives. A missed condition, an unchecked title
-              encumbrance, or an ambiguous clause in a purchase agreement can
-              create problems that follow you long after keys are exchanged.
-              Our conveyancing team makes sure none of that happens.
+              timelines, and a stack of documents most people see only once in
+              their lives. A missed condition, an unchecked title encumbrance,
+              or an ambiguous clause in a purchase agreement can create problems
+              that follow you long after keys are exchanged. Our conveyancing
+              team makes sure none of that happens.
             </p>
             <p className="text-[14px] text-[#B8AFA0] leading-relaxed mb-5">
-              Whether you are purchasing your first home, selling an
-              investment property, or navigating a commercial transaction,
-              we review every document, explain every step in plain language,
-              and coordinate with your realtor, lender, and the other side
-              to ensure closing goes smoothly.
+              Whether you are purchasing your first home, selling an investment
+              property, or navigating a commercial transaction, we review every
+              document, explain every step in plain language, and coordinate
+              with your realtor, lender, and the other side to ensure closing
+              goes smoothly.
             </p>
             <p className="text-[14px] text-[#B8AFA0] leading-relaxed">
-              Clients leave our office knowing exactly what they signed,
-              what they own, and that their interests were protected at every
-              stage.
+              Clients leave our office knowing exactly what they signed, what
+              they own, and that their interests were protected at every stage.
             </p>
           </div>
 
@@ -1880,7 +1949,7 @@ function RealEstatePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
       <Footer onNavigate={onNavigate} />
     </main>
-  );
+  )
 }
 
 /* ─────────────────────────── DOMESTIC ABUSE CIVIL CLAIMS PAGE ─────────────────────────── */
@@ -1909,7 +1978,9 @@ function DomesticAbusePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
             className="text-4xl md:text-6xl font-[400] text-[#F5EFE4] leading-[1.1] max-w-3xl"
           >
             What was done to you was wrong.{" "}
-            <em className="text-[#C4883D]">The law can hold them accountable.</em>
+            <em className="text-[#C4883D]">
+              The law can hold them accountable.
+            </em>
           </h1>
         </div>
       </section>
@@ -1919,9 +1990,10 @@ function DomesticAbusePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center gap-4">
           <div className="w-1 h-8 bg-[#C4883D] shrink-0 rounded-full" />
           <p className="text-[12px] text-[#D4A055]">
-            <strong>Your safety is the priority.</strong> If you are in immediate danger, call 911.
-            If you need support, the 24‑hour Alberta Family Violence Info Line is{" "}
-            <strong>310‑1818</strong>. Everything you discuss with our office is strictly confidential.
+            <strong>Your safety is the priority.</strong> If you are in
+            immediate danger, call 911. If you need support, the 24‑hour Alberta
+            Family Violence Info Line is <strong>310‑1818</strong>. Everything
+            you discuss with our office is strictly confidential.
           </p>
         </div>
       </div>
@@ -1934,16 +2006,17 @@ function DomesticAbusePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
               style={{ fontFamily: "var(--font-display)" }}
               className="text-3xl font-[400] text-[#F5EFE4] leading-snug mb-6"
             >
-              You have the right to pursue justice — on your own terms, in your own time.
+              You have the right to pursue justice — on your own terms, in your
+              own time.
             </h2>
             <p className="text-[14px] text-[#B8AFA0] leading-relaxed mb-5">
-              Domestic abuse leaves deep marks — physical, emotional, and financial.
-              Many survivors never see their abuser face meaningful consequences.
-              The criminal justice system can feel slow, uncertain, and out of
-              your control. A civil lawsuit is different: <em className="text-[#D4A055]">you</em> decide
-              whether to proceed, the standard of proof is lower than in a
-              criminal trial, and the outcome can include financial compensation
-              paid directly to you.
+              Domestic abuse leaves deep marks — physical, emotional, and
+              financial. Many survivors never see their abuser face meaningful
+              consequences. The criminal justice system can feel slow,
+              uncertain, and out of your control. A civil lawsuit is different:{" "}
+              <em className="text-[#D4A055]">you</em> decide whether to proceed,
+              the standard of proof is lower than in a criminal trial, and the
+              outcome can include financial compensation paid directly to you.
             </p>
             <p className="text-[14px] text-[#B8AFA0] leading-relaxed mb-5">
               Alberta courts have consistently recognized the right of domestic
@@ -2064,17 +2137,17 @@ function DomesticAbusePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
               Time limits apply — but the law makes allowances for survivors.
             </h3>
             <p className="text-[13px] text-[#B8AFA0] leading-relaxed mb-3">
-              Alberta's <em className="text-[#D4A055]">Limitations Act</em> generally requires civil
-              claims to be brought within two years of the date the claim was
-              discovered. For domestic abuse, however, the courts have
-              recognised that discovery can be delayed by trauma, coercion,
-              and the complexity of abuse dynamics. Extended limitation periods
-              have been applied in many survivor cases.
+              Alberta's <em className="text-[#D4A055]">Limitations Act</em>{" "}
+              generally requires civil claims to be brought within two years of
+              the date the claim was discovered. For domestic abuse, however,
+              the courts have recognised that discovery can be delayed by
+              trauma, coercion, and the complexity of abuse dynamics. Extended
+              limitation periods have been applied in many survivor cases.
             </p>
             <p className="text-[13px] text-[#B8AFA0] leading-relaxed">
-              Even if you are uncertain whether the time limit has passed,
-              speak with us. Do not assume it is too late without getting
-              advice first.
+              Even if you are uncertain whether the time limit has passed, speak
+              with us. Do not assume it is too late without getting advice
+              first.
             </p>
           </div>
         </div>
@@ -2090,8 +2163,8 @@ function DomesticAbusePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
         </h2>
         <p className="text-[14px] text-[#8A8070] max-w-xl mx-auto mb-10">
           A confidential consultation costs you nothing. We will listen
-          carefully, explain your options honestly, and let you decide what
-          you want to do — with no pressure and no judgment.
+          carefully, explain your options honestly, and let you decide what you
+          want to do — with no pressure and no judgment.
         </p>
         <button
           onClick={() => onNavigate("contact")}
@@ -2104,7 +2177,7 @@ function DomesticAbusePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
       <Footer onNavigate={onNavigate} />
     </main>
-  );
+  )
 }
 
 /* ─────────────────────────── FARM & AGRICULTURAL DISPUTES PAGE ─────────────────────────── */
@@ -2133,7 +2206,9 @@ function FarmPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
             className="text-4xl md:text-6xl font-[400] text-[#F5EFE4] leading-[1.1] max-w-3xl"
           >
             Your land, your herd, your livelihood.{" "}
-            <em className="text-[#C4883D]">Defended by people who understand it.</em>
+            <em className="text-[#C4883D]">
+              Defended by people who understand it.
+            </em>
           </h1>
         </div>
       </section>
@@ -2146,29 +2221,30 @@ function FarmPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
               style={{ fontFamily: "var(--font-display)" }}
               className="text-3xl font-[400] text-[#F5EFE4] leading-snug mb-6"
             >
-              Agricultural disputes require more than legal knowledge — they require context.
+              Agricultural disputes require more than legal knowledge — they
+              require context.
             </h2>
             <p className="text-[14px] text-[#B8AFA0] leading-relaxed mb-5">
               A farm is not a line item on a balance sheet. It is a cattle
               operation built over generations, equipment purchased and
-              maintained with care, outbuildings positioned for function,
-              and land whose value can't be captured in a municipal
-              assessment. When that operation is caught in a dispute —
-              whether a marital breakdown, a partnership dissolution, a
-              neighbour conflict, or a contract gone wrong — you need a
-              legal team that understands what you're actually protecting.
+              maintained with care, outbuildings positioned for function, and
+              land whose value can't be captured in a municipal assessment. When
+              that operation is caught in a dispute — whether a marital
+              breakdown, a partnership dissolution, a neighbour conflict, or a
+              contract gone wrong — you need a legal team that understands what
+              you're actually protecting.
             </p>
             <p className="text-[14px] text-[#B8AFA0] leading-relaxed mb-5">
               Signore &amp; Asp has advised farm families and agricultural
-              operators across central Alberta. We know how to value a
-              cattle herd, how to approach the division of working
-              machinery, and how to protect an operation's viability while
-              a legal matter is resolved. We work methodically, move at the
-              right pace, and fight hard when the situation requires it.
+              operators across central Alberta. We know how to value a cattle
+              herd, how to approach the division of working machinery, and how
+              to protect an operation's viability while a legal matter is
+              resolved. We work methodically, move at the right pace, and fight
+              hard when the situation requires it.
             </p>
             <p className="text-[14px] text-[#B8AFA0] leading-relaxed">
-              Based in Wetaskiwin — the heart of Alberta's agricultural
-              corridor — we serve farm families throughout the region.
+              Based in Wetaskiwin — the heart of Alberta's agricultural corridor
+              — we serve farm families throughout the region.
             </p>
           </div>
 
@@ -2281,23 +2357,26 @@ function FarmPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
             </div>
             <div>
               <p className="text-[14px] text-[#B8AFA0] leading-relaxed mb-4">
-                Alberta's <em className="text-[#D4A055]">Matrimonial Property Act</em> creates
-                specific rules around exempt property, pre-marital contributions, and inherited
-                assets — but applying those rules to a working farm is rarely straightforward.
-                Determining what portion of an operation is exempt, what constitutes a family
-                asset, and how to divide without forcing a sale requires careful legal and
-                financial analysis.
+                Alberta's{" "}
+                <em className="text-[#D4A055]">Matrimonial Property Act</em>{" "}
+                creates specific rules around exempt property, pre-marital
+                contributions, and inherited assets — but applying those rules
+                to a working farm is rarely straightforward. Determining what
+                portion of an operation is exempt, what constitutes a family
+                asset, and how to divide without forcing a sale requires careful
+                legal and financial analysis.
               </p>
               <p className="text-[14px] text-[#B8AFA0] leading-relaxed mb-4">
-                We work with agricultural appraisers, accountants, and financial analysts to
-                build a complete picture of the operation's value and structure a resolution
-                that recognises every party's contribution — without unnecessarily destroying
-                what took decades to build.
+                We work with agricultural appraisers, accountants, and financial
+                analysts to build a complete picture of the operation's value
+                and structure a resolution that recognises every party's
+                contribution — without unnecessarily destroying what took
+                decades to build.
               </p>
               <p className="text-[14px] text-[#B8AFA0] leading-relaxed">
-                Whether you are the spouse who built the farm or the one who supported it,
-                we ensure your interests are clearly represented and that the final outcome
-                is fair to you.
+                Whether you are the spouse who built the farm or the one who
+                supported it, we ensure your interests are clearly represented
+                and that the final outcome is fair to you.
               </p>
             </div>
           </div>
@@ -2328,7 +2407,7 @@ function FarmPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
       <Footer onNavigate={onNavigate} />
     </main>
-  );
+  )
 }
 
 /* ─────────────────────────── CIVIL LITIGATION PAGE ─────────────────────────── */
@@ -2461,8 +2540,8 @@ function CivilPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
               </p>
               <p className="text-[14px] text-[#B8AFA0] leading-relaxed mb-8">
                 We handle these matters with the seriousness, confidentiality,
-                and sensitivity they require. Every step is on your terms and
-                at your pace. There is no obligation in speaking with us.
+                and sensitivity they require. Every step is on your terms and at
+                your pace. There is no obligation in speaking with us.
               </p>
               <button
                 onClick={() => onNavigate("contact")}
@@ -2547,7 +2626,7 @@ function CivilPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
       <Footer onNavigate={onNavigate} />
     </main>
-  );
+  )
 }
 
 /* ─────────────────────────── PERSONAL INJURY PAGE ─────────────────────────── */
@@ -2773,7 +2852,7 @@ function PersonalInjuryPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
       <Footer onNavigate={onNavigate} />
     </main>
-  );
+  )
 }
 
 /* ─────────────────────────── WILLS PAGE ─────────────────────────── */
@@ -2932,8 +3011,8 @@ function WillsPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
         </h2>
         <p className="text-[14px] text-[#8A8070] max-w-xl mx-auto mb-10">
           Estate planning doesn't have to be complicated. A single meeting is
-          often all it takes to put a solid plan in place. Contact our office
-          in Wetaskiwin and we'll walk you through your options.
+          often all it takes to put a solid plan in place. Contact our office in
+          Wetaskiwin and we'll walk you through your options.
         </p>
         <button
           onClick={() => onNavigate("contact")}
@@ -2946,7 +3025,7 @@ function WillsPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
       <Footer onNavigate={onNavigate} />
     </main>
-  );
+  )
 }
 
 /* ─────────────────────────── CONTACT PAGE ─────────────────────────── */
@@ -2957,15 +3036,15 @@ function ContactPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
     phone: "",
     matter: "",
     message: "",
-  });
-  const [sent, setSent] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  })
+  const [sent, setSent] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setError("");
+    e.preventDefault()
+    setSubmitting(true)
+    setError("")
     try {
       const res = await fetch(
         "https://levbxgicxwfriubnczld.supabase.co/functions/v1/contact",
@@ -2973,16 +3052,18 @@ function ContactPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(form),
-        }
-      );
-      if (!res.ok) throw new Error("Failed to send");
-      setSent(true);
+        },
+      )
+      if (!res.ok) throw new Error("Failed to send")
+      setSent(true)
     } catch {
-      setError("Something went wrong. Please call us directly at 1(866)915-1877.");
+      setError(
+        "Something went wrong. Please call us directly at 1(866)915-1877.",
+      )
     } finally {
-      setSubmitting(false);
+      setSubmitting(false)
     }
-  };
+  }
 
   return (
     <div className="bg-[#0B0A09] pt-[96px]">
@@ -3078,7 +3159,7 @@ function ContactPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
                       </label>
                       <input
                         type={field.type}
-                        value={form[field.name as keyof typeof form]}
+                        value={form[(field.name as keyof typeof form)]}
                         onChange={(e) =>
                           setForm({ ...form, [field.name]: e.target.value })
                         }
@@ -3149,7 +3230,9 @@ function ContactPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
                   </button>
 
                   {error && (
-                    <p className="text-[12px] text-red-400 text-center">{error}</p>
+                    <p className="text-[12px] text-red-400 text-center">
+                      {error}
+                    </p>
                   )}
 
                   <p className="text-[11px] text-[#3A3530] text-center">
@@ -3165,7 +3248,7 @@ function ContactPage({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
       <Footer onNavigate={onNavigate} />
     </div>
-  );
+  )
 }
 
 /* ─────────────────────────── FOOTER ─────────────────────────── */
@@ -3198,9 +3281,15 @@ function Footer({ onNavigate }: { onNavigate: (p: Page) => void }) {
                 { label: "Real Estate", page: "realestate" as Page },
                 { label: "Civil Litigation", page: "civil" as Page },
                 { label: "Farm & Agricultural Disputes", page: "farm" as Page },
-                { label: "Domestic Abuse Civil Claims", page: "domestic" as Page },
+                {
+                  label: "Domestic Abuse Civil Claims",
+                  page: "domestic" as Page,
+                },
                 { label: "Emergency Protection Orders", page: "epo" as Page },
-                { label: "Dependent Adult Applications", page: "dependent" as Page },
+                {
+                  label: "Dependent Adult Applications",
+                  page: "dependent" as Page,
+                },
               ].map((item) => (
                 <li key={item.label}>
                   <button
@@ -3265,17 +3354,17 @@ function Footer({ onNavigate }: { onNavigate: (p: Page) => void }) {
         </div>
       </div>
     </footer>
-  );
+  )
 }
 
 /* ─────────────────────────── APP ROOT ─────────────────────────── */
 export default function App() {
-  const [page, setPage] = useState<Page>("home");
+  const [page, setPage] = useState<Page>("home")
 
   const navigate = (p: Page) => {
-    setPage(p);
-    window.scrollTo({ top: 0, behavior: "instant" });
-  };
+    setPage(p)
+    window.scrollTo({ top: 0, behavior: "instant" })
+  }
 
   return (
     <div className="min-h-screen bg-[#0B0A09]">
@@ -3295,6 +3384,7 @@ export default function App() {
       {page === "epo" && <EPOPage onNavigate={navigate} />}
       {page === "dependent" && <DependentAdultPage onNavigate={navigate} />}
       {page === "contact" && <ContactPage onNavigate={navigate} />}
+      <Analytics />
     </div>
-  );
+  )
 }
